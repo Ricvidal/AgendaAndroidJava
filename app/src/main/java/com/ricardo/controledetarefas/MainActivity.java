@@ -51,14 +51,22 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+
         recyclerView = findViewById(R.id.recyclerView);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               Intent intent = new Intent(getApplicationContext(), AdicionarTarefas.class);
+              startActivity(intent);
             }
         });
+    }
+
+    protected void onStart() {
+        super.onStart();
+        carregarListaTarefas();
+
     }
 
     public void carregarListaTarefas(){
