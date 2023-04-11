@@ -13,16 +13,30 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.ricardo.controledetarefas.adapter.TarefaAdapter;
 import com.ricardo.controledetarefas.databinding.ActivityMainBinding;
+import com.ricardo.controledetarefas.model.Tarefa;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+
+    private RecyclerView recyclerView;
+    private TarefaAdapter tarefaAdapter;
+    private List<Tarefa> listaTarefas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +51,33 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        recyclerView = findViewById(R.id.recyclerView);
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               Intent intent = new Intent(getApplicationContext(), AdicionarTarefas.class);
             }
         });
+    }
+
+    public void carregarListaTarefas(){
+
+        Tarefa tarefa01 = new Tarefa();
+        tarefa01.setNomeTarefa("Aprender recycleView");
+        listaTarefas.add(tarefa01);
+
+        Tarefa tarefa02 = new Tarefa();
+        tarefa02.setNomeTarefa("Aprender SQLite");
+        listaTarefas.add(tarefa02);
+
+        tarefaAdapter = new TarefaAdapter(listaTarefas);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayout.VERTICAL));
+        recyclerView.setAdapter(tarefaAdapter);
     }
 
     @Override
